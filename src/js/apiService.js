@@ -4,13 +4,12 @@ const API_KEY = '35770309-78fa01c385455366c0f1ba6fe';
 const URL = 'https://pixabay.com/api';
 
 export default class NewsApiService {
-  constructor(total = 0, totalHits = 0) {
+  constructor(totalHits = 0) {
     this.searchQuery = '';
     this.page = 1;
     this.totalHits = totalHits;
-    this.total = total;
     this.key = API_KEY;
-    this.remainder = 0;
+    this.totalPages = 0;
     this.per_page = 40;
   }
 
@@ -24,12 +23,12 @@ export default class NewsApiService {
   }
 
   incrementPage() {
-    this.page += 1;
+    return (this.page += 1);
   }
 
   resetPage() {
     this.page = 1;
-    this.total = 0;
+    this.totalPages = 0;
   }
 
   get query() {
@@ -40,20 +39,8 @@ export default class NewsApiService {
     this.searchQuery = newQuery;
   }
 
-  get hits() {
-    return this.totalHits;
-  }
-
-  set hits(newHits) {
-    this.totalHits = newHits;
-  }
-
-  incrementTotalHits() {
-    return (this.total += this.per_page);
-  }
-
-  leftImages() {
-    return (this.remainder = this.totalHits - this.total);
+  countTotalPages(totalHits) {
+    return (this.totalPages = Math.ceil(totalHits / this.per_page));
   }
 }
 

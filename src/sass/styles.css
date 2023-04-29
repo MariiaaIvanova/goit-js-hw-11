@@ -114,9 +114,6 @@ input:focus {
     display: none;
 }
 
-.icon-spinner {
-    display: none;
-} 
 .search-form__icon {
     width: 20px;
     height: 20px;
