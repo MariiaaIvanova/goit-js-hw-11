@@ -28,20 +28,8 @@ input {
 
 input:focus {
     border-color: #ffb8df;
-}
+} 
 
-/* button {
-    padding: 5px 10px;
-    border-radius: 8px;
-    border-width: 1px;
-    border-style: solid;
-    font-weight: 600;
-    cursor: pointer;
-    align-items: center;
-    border-color: #2b9fe298;
-    background-color: #ffb8df;
-    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-} */
 .gallery {
     display: grid;
     max-width: 1140px;
@@ -126,7 +114,15 @@ input:focus {
     display: none;
 }
 
-
+.icon-spinner {
+    display: none;
+} 
+.search-form__icon {
+    width: 20px;
+    height: 20px;
+    color: currentColor;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 .info {
     display: flex;
@@ -179,4 +175,4 @@ input:focus {
     border-color: #2b9fe298;
     background-color: #ffb8df;
     transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-}
+} 

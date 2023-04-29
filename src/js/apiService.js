@@ -56,3 +56,5 @@ export default class NewsApiService {
     return (this.remainder = this.totalHits - this.total);
   }
 }
+
+

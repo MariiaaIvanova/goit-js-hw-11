@@ -5,12 +5,13 @@ import NewsApiService from './js/apiService';
 import LoadMoreBtn from './js/loadMoreBtn';
 import { refs } from './js/refs';
 
+
 const newsApiService = new NewsApiService();
 const loadMoreBtn = new LoadMoreBtn({
   selector: '.load-more',
   isHidden: true,
 });
-
+// buttonSearch
 refs.buttonSearch.addEventListener('click', onClickButton);
 
 export default function onClickButton() {
@@ -23,10 +24,51 @@ export default function onClickButton() {
 
 refs.searchForm.addEventListener('submit', onSearch);
 loadMoreBtn.button.addEventListener('click', fetchImages);
+//  function onloadMore() {
+//      NewsApiService.page += 1;
+//     // simpleLightBox.destroy();
+//     // simpleLightBox.refresh();
+
+//     fetchImages(searchQuery, page, per_page)
+//       .then(data => {
+//         renderGallery(data.hits);
+//         // simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+
+//         const totalPages = Math.ceil(data.totalHits / per_page);
+
+//         if (page > totalPages) {
+//           Notify.failure(
+//             "We're sorry, but you've reached the end of search results.",
+//           );
+//         }
+//       })
+//       .catch(error => console.log(error));
+// }
+//   function checkIfEndOfPage() {
+//   return (
+//     window.innerHeight + window.pageYOffset >=
+//     document.documentElement.scrollHeight
+//   );
+// }
+
+//   function showLoadMorePage() {
+//     if (checkIfEndOfPage()) {
+//       onloadMore();
+//     }
+//   }
+//   window.addEventListener('scroll', showLoadMorePage);
+
+
 
 function onSearch(event) {
   event.preventDefault();
   newsApiService.query = event.currentTarget.elements.searchQuery.value.trim();
+  if ( newsApiService.query === '') {
+    Notify.failure(
+      'The search string cannot be empty. Please enter a search word.',
+    );
+    return;
+  }
   newsApiService.resetPage();
   clearGalleryList();
   fetchImages();
@@ -37,7 +79,7 @@ async function fetchImages() {
   try {
     const markup = await getImagesMarkup();
     updateGalleryList(markup);
-    slowScroll();
+    slowScroll(0.2);
     gallery.refresh();
   } catch (error) {
     onFetchError(error);
@@ -59,20 +101,23 @@ async function getImagesMarkup() {
       return Notify.info(
         'Sorry, there are no images matching your search query. Please try again.'
       );
+   
     } else if (hits.length === totalHitsPerPage) {
       Notify.success(`Hooray! We found ${totalHits} images.`);
+      // refs.loadMoreBtn.classList.remove('is-hidden');
     } else if (hits.length === totalHits) {
       Notify.warning('These are all images for your request.');
     }
+  
 
     if (remainder < totalHitsPerPage && remainder === 0) {
       loadMoreBtn.show();
       loadMoreBtn.hide();
       return Notify.warning("We're sorry, but you've reached the end of search results.");
     }
-
     return hits.reduce((markup, hit) => markup + createMarkup(hit), '');
-  } catch (error) {
+  }
+  catch (error) {
     onFetchError(error);
   }
 }
@@ -112,6 +157,7 @@ function updateGalleryList(markup) {
     loadMoreBtn.enable();
     refs.gallery.insertAdjacentHTML('beforeend', markup);
   }
+
 }
 
 function clearGalleryList() {
@@ -126,7 +172,7 @@ function onFetchError(error) {
   if (!error.status) {
     loadMoreBtn.hide();
     return Notify.failure('Oops, something went wrong, please try again.');
-  }
+  } 
 }
 
 function slowScroll() {
@@ -139,6 +185,4 @@ function slowScroll() {
     behavior: 'smooth',
   });
 }
-
-
 
