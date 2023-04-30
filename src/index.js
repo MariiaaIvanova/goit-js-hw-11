@@ -95,11 +95,11 @@ async function getImagesMarkup() {
       loadMoreBtn.hide();
       Notify.warning('These are all images for your request.');
     }
-    // if (hits.length === totalHits) {
+
+     // if (hits.length === totalHits) {
     //   loadMoreBtn.hide();
     //     Notify.warning('These are all images for your request.');
     // } 
- 
     page += 1;
      
     return hits.reduce((markup, hit) => markup + createMarkup(hit), '');
