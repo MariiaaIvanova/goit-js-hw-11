@@ -12,6 +12,8 @@ const loadMoreBtn = new LoadMoreBtn({
   isHidden: true,
 });
 let page = 1;
+displayedImagesCount = 0;
+
 
 // buttonSearch
 refs.buttonSearch.addEventListener('click', onClickButton);
@@ -70,10 +72,21 @@ async function getImagesMarkup() {
     console.log(page);
     console.log(totalPages);
     console.log(totalHits);
+    
+     if (totalHits === 0) {
+      loadMoreBtn.hide();
+      return Notify.info(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+    }
 
     if (page > totalPages) {
       loadMoreBtn.hide();
       return Notify.warning("We're sorry, but you've reached the end of search results.");
+    }
+    if (page === totalPages) {
+     loadMoreBtn.hide();
+      Notify.warning("We're sorry, but you've reached the end of search results.");
     }
     if (page === 1) {
       Notify.success(`Hooray! We found ${totalHits} images.`);
@@ -83,7 +96,7 @@ async function getImagesMarkup() {
       loadMoreBtn.hide();
         Notify.warning('These are all images for your request.');
     } 
-     
+ 
     page += 1;
      
     return hits.reduce((markup, hit) => markup + createMarkup(hit), '');
